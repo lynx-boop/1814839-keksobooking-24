@@ -10,54 +10,59 @@ const PHOTOS_LIST = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
+let userPicks = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10'];
 
-// ПЕРЕМЕННЫЕ
+// КОНСТАНТЫ
 const PRICE_MIN = 1000;
 const PRICE_MAX = 30000;
 const ROOM_MIN = 1;
 const ROOM_MAX= 60;
 const GUEST_MIN = 1;
 const GUEST_MAX = 10;
+const LAT_MIN = 35.65000;
+const LAT_MAX = 35.70000;
+const LNG_MIN = 139.70000;
+const LNG_MAX = 139.80000;
+const ADVERTS_AMOUNT = 10;
 
 // ФУНКЦИИ
-const genAvatarUrl = () => {
-  const num = _.random(1, 10);
-  if (num < 10) {
-    return `img/avatars/user0${num}.png`;
-  }
-  return `img/avatars/user${num}.png`;
-};
-
 const getRandomArrayElement = (array) => (array[_.random(0, array.length - 1)]);
 
 const getSomeRandomArrayElements = (array) => {
-  let result = [];
+  const result = [];
 
-  for (const feature of array) {
-    if (_.random(0,1)) {
-      result.push(feature);
+  for (const item of array) {
+    if (_.random(0, 1)) {
+      result.push(item);
     }
   }
 
   return result;
 };
 
-// ОСНОВНАЯ ФУНКЦИЯ ДЗ
+const genAvatarUrl = () => {
+  const num = getRandomArrayElement(userPicks);
+  userPicks = userPicks.filter((item) => item !== num); //кусок со стаковерфлоу, удаляет элемент из массива
+
+  return `img/avatars/user${num}.png`;
+};
+
+// ОСНОВНЫЕ ФУНКЦИИ ДЗ
 const createAdvert = () => {
-  const lt = _.random(35.65000, 35.70000).toFixed(5);
-  const lg = _.random(35.65000, 35.70000).toFixed(5);
+  const lat = _.random(LAT_MIN, LAT_MAX).toFixed(5);
+  const lng = _.random(LNG_MIN, LNG_MAX).toFixed(5);
 
   return {
     author: {
       avatar: genAvatarUrl(),
     },
     location: {
-      lat: lt,
-      lng: lg,
+      lat: lat,
+      lng: lng,
     },
     offer: {
       title: getRandomArrayElement(TITLE_LIST),
-      address: `${lt}, ${lg}`,
+      address: `${lat}, ${lng}`,
       price: _.random(PRICE_MIN, PRICE_MAX),
       type: getRandomArrayElement(TYPE_LIST),
       rooms: _.random(ROOM_MIN, ROOM_MAX),
@@ -71,6 +76,13 @@ const createAdvert = () => {
   };
 };
 
-for (let i = 0; i < 10; i++) {
-  console.log(createAdvert());
-}
+const createAdverts = (count) => {
+  if (count > userPicks.length()) {
+    count = userPicks.length();
+  }
+
+  Array.from({length: count}, createAdvert);
+};
+
+// eslint-disable-next-line no-console
+console.log(createAdverts(ADVERTS_AMOUNT));
