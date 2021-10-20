@@ -1,23 +1,88 @@
-const getRandom = (lower, upper) => {
-  if (lower < upper || lower < 0) {
-    const min = Math.ceil(lower); // а можно вот так сделать, не добавлять новые переменные min max, как в видео?
-    const max = Math.floor(upper);
-    return Math.floor(Math.random() * (max - min)) + min;
-  } else {
-    throw new getRandom;
+// МАССИВЫ
+const TITLE_LIST = ['Заголовок-1', 'Заголовок-2', 'Заголовок-3', 'Заголовок-4'];
+const TYPE_LIST = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
+const CHECKIN_LIST = ['12:00', '13:00', '14:00'];
+const CHECKOUT_LIST = ['12:00', '13:00', '14:00'];
+const FEATURES_LIST = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+const DESCRIPTION_LIST = ['Описание-1', 'Описание-2', 'Описание-3', 'Описание-4'];
+const PHOTOS_LIST = [
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
+];
+let userPicks = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10'];
+
+// КОНСТАНТЫ
+const PRICE_MIN = 1000;
+const PRICE_MAX = 30000;
+const ROOM_MIN = 1;
+const ROOM_MAX= 60;
+const GUEST_MIN = 1;
+const GUEST_MAX = 10;
+const LAT_MIN = 35.65000;
+const LAT_MAX = 35.70000;
+const LNG_MIN = 139.70000;
+const LNG_MAX = 139.80000;
+const ADVERTS_AMOUNT = 10;
+
+// ФУНКЦИИ
+const getRandomArrayElement = (array) => (array[_.random(0, array.length - 1)]);
+
+const getSomeRandomArrayElements = (array) => {
+  const result = [];
+
+  for (const item of array) {
+    if (_.random(0, 1)) {
+      result.push(item);
+    }
   }
+
+  return result;
 };
 
-console.log(getRandom(12, 20));
+const genAvatarUrl = () => {
+  const num = getRandomArrayElement(userPicks);
+  userPicks = userPicks.filter((item) => item !== num); //кусок со стаковерфлоу, удаляет элемент из массива
 
-const getFloatingRandom = (lower, upper, dot) => {
-  if (lower > upper || lower < 0) {
-    return ('Неверный диапазон! Поменяйте числа местами или задайте другой диапазон!');
-  }
-  const min = lower;
-  const max = upper;
-  return (Math.random() * (max - min) + min).toFixed(dot);
+  return `img/avatars/user${num}.png`;
 };
 
-console.log(getFloatingRandom(12, 24, 5));
+// ОСНОВНЫЕ ФУНКЦИИ ДЗ
+const createAdvert = () => {
+  const lat = _.random(LAT_MIN, LAT_MAX).toFixed(5);
+  const lng = _.random(LNG_MIN, LNG_MAX).toFixed(5);
 
+  return {
+    author: {
+      avatar: genAvatarUrl(),
+    },
+    location: {
+      lat: lat,
+      lng: lng,
+    },
+    offer: {
+      title: getRandomArrayElement(TITLE_LIST),
+      address: `${lat}, ${lng}`,
+      price: _.random(PRICE_MIN, PRICE_MAX),
+      type: getRandomArrayElement(TYPE_LIST),
+      rooms: _.random(ROOM_MIN, ROOM_MAX),
+      guests: _.random(GUEST_MIN, GUEST_MAX),
+      checkin: getRandomArrayElement(CHECKIN_LIST),
+      checkout: getRandomArrayElement(CHECKOUT_LIST),
+      features: getSomeRandomArrayElements(FEATURES_LIST),
+      description: getRandomArrayElement(DESCRIPTION_LIST),
+      photos: getSomeRandomArrayElements(PHOTOS_LIST),
+    },
+  };
+};
+
+const createAdverts = (count) => {
+  if (count > userPicks.length()) {
+    count = userPicks.length();
+  }
+
+  Array.from({length: count}, createAdvert);
+};
+
+// eslint-disable-next-line no-console
+console.log(createAdverts(ADVERTS_AMOUNT));
