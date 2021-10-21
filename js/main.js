@@ -1,3 +1,6 @@
+
+import {PRICE_MIN, PRICE_MAX, ROOM_MIN, ROOM_MAX, GUEST_MIN, GUEST_MAX, LAT_MIN, LAT_MAX, LNG_MIN, LNG_MAX, ADVERTS_AMOUNT} from '/js/constants.js';
+
 // МАССИВЫ
 const TITLE_LIST = ['Заголовок-1', 'Заголовок-2', 'Заголовок-3', 'Заголовок-4'];
 const TYPE_LIST = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
@@ -11,19 +14,6 @@ const PHOTOS_LIST = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 let userPicks = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10'];
-
-// КОНСТАНТЫ
-const PRICE_MIN = 1000;
-const PRICE_MAX = 30000;
-const ROOM_MIN = 1;
-const ROOM_MAX= 60;
-const GUEST_MIN = 1;
-const GUEST_MAX = 10;
-const LAT_MIN = 35.65000;
-const LAT_MAX = 35.70000;
-const LNG_MIN = 139.70000;
-const LNG_MAX = 139.80000;
-const ADVERTS_AMOUNT = 10;
 
 // ФУНКЦИИ
 const getRandomArrayElement = (array) => (array[_.random(0, array.length - 1)]);
@@ -77,8 +67,8 @@ const createAdvert = () => {
 };
 
 const createAdverts = (count) => {
-  if (count > userPicks.length()) {
-    count = userPicks.length();
+  if (count > userPicks.length) {
+    count = userPicks.length;
   }
 
   Array.from({length: count}, createAdvert);
