@@ -1,43 +1,11 @@
 
 import {PRICE_MIN, PRICE_MAX, ROOM_MIN, ROOM_MAX, GUEST_MIN, GUEST_MAX, LAT_MIN, LAT_MAX, LNG_MIN, LNG_MAX, ADVERTS_AMOUNT} from '/js/constants.js';
+import {TITLE_LIST, TYPE_LIST, CHECKIN_LIST, CHECKOUT_LIST, FEATURES_LIST, DESCRIPTION_LIST, PHOTOS_LIST} from '/js/arrays.js';
+import {getRandomArrayElement} from '/js/get-random-array-element.js';
+import {getSomeRandomArrayElements} from '/js/get-some-random-array-elements.js';
+import {genAvatarUrl, userPicks} from '/js/gen-avatar-urls.js';
 
-// МАССИВЫ
-const TITLE_LIST = ['Заголовок-1', 'Заголовок-2', 'Заголовок-3', 'Заголовок-4'];
-const TYPE_LIST = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
-const CHECKIN_LIST = ['12:00', '13:00', '14:00'];
-const CHECKOUT_LIST = ['12:00', '13:00', '14:00'];
-const FEATURES_LIST = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-const DESCRIPTION_LIST = ['Описание-1', 'Описание-2', 'Описание-3', 'Описание-4'];
-const PHOTOS_LIST = [
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
-];
-let userPicks = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10'];
 
-// ФУНКЦИИ
-const getRandomArrayElement = (array) => (array[_.random(0, array.length - 1)]);
-
-const getSomeRandomArrayElements = (array) => {
-  const result = [];
-
-  for (const item of array) {
-    if (_.random(0, 1)) {
-      result.push(item);
-    }
-  }
-
-  return result;
-};
-
-const genAvatarUrl = () => {
-  const num = getRandomArrayElement(userPicks);
-  userPicks = userPicks.filter((item) => item !== num); //кусок со стаковерфлоу, удаляет элемент из массива
-
-  return `img/avatars/user${num}.png`;
-};
-
-// ОСНОВНЫЕ ФУНКЦИИ ДЗ
 const createAdvert = () => {
   const lat = _.random(LAT_MIN, LAT_MAX).toFixed(5);
   const lng = _.random(LNG_MIN, LNG_MAX).toFixed(5);
