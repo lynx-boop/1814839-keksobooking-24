@@ -70,8 +70,7 @@ const createAdverts = (count) => {
   if (count > userPicks.length) {
     count = userPicks.length;
   }
-
-  Array.from({length: count}, createAdvert);
+  return Array.from({length: count}, createAdvert);
 };
 
 // eslint-disable-next-line no-console
