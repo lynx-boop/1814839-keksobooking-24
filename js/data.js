@@ -1,4 +1,8 @@
-// МАССИВЫ
+import {
+  getRandomArrayElement,
+  getSomeRandomArrayElements
+} from '/js/utils.js';
+
 const TITLE_LIST = ['Заголовок-1', 'Заголовок-2', 'Заголовок-3', 'Заголовок-4'];
 const TYPE_LIST = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 const CHECKIN_LIST = ['12:00', '13:00', '14:00'];
@@ -10,9 +14,7 @@ const PHOTOS_LIST = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
-let userPicks = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10'];
 
-// КОНСТАНТЫ
 const PRICE_MIN = 1000;
 const PRICE_MAX = 30000;
 const ROOM_MIN = 1;
@@ -25,20 +27,7 @@ const LNG_MIN = 139.70000;
 const LNG_MAX = 139.80000;
 const ADVERTS_AMOUNT = 10;
 
-// ФУНКЦИИ
-const getRandomArrayElement = (array) => (array[_.random(0, array.length - 1)]);
-
-const getSomeRandomArrayElements = (array) => {
-  const result = [];
-
-  for (const item of array) {
-    if (_.random(0, 1)) {
-      result.push(item);
-    }
-  }
-
-  return result;
-};
+let userPicks = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10'];
 
 const genAvatarUrl = () => {
   const num = getRandomArrayElement(userPicks);
@@ -47,7 +36,6 @@ const genAvatarUrl = () => {
   return `img/avatars/user${num}.png`;
 };
 
-// ОСНОВНЫЕ ФУНКЦИИ ДЗ
 const createAdvert = () => {
   const lat = _.random(LAT_MIN, LAT_MAX).toFixed(5);
   const lng = _.random(LNG_MIN, LNG_MAX).toFixed(5);
@@ -77,11 +65,10 @@ const createAdvert = () => {
 };
 
 const createAdverts = (count) => {
-  if (count > userPicks.length()) {
-    count = userPicks.length();
+  if (count > userPicks.length) {
+    count = userPicks.length;
   }
-
-  Array.from({length: count}, createAdvert);
+  return Array.from({length: count}, createAdvert);
 };
 
 // eslint-disable-next-line no-console
