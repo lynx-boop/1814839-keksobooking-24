@@ -18,14 +18,14 @@ const PHOTOS_LIST = [
 const PRICE_MIN = 1000;
 const PRICE_MAX = 30000;
 const ROOM_MIN = 1;
-const ROOM_MAX= 60;
+const ROOM_MAX= 6;
 const GUEST_MIN = 1;
 const GUEST_MAX = 10;
 const LAT_MIN = 35.65000;
 const LAT_MAX = 35.70000;
 const LNG_MIN = 139.70000;
 const LNG_MAX = 139.80000;
-const ADVERTS_AMOUNT = 10;
+const SIMILAR_ADVERT_COUNT = 10;
 
 let userPicks = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10'];
 
@@ -64,12 +64,7 @@ const createAdvert = () => {
   };
 };
 
-const createAdverts = (count) => {
-  if (count > userPicks.length) {
-    count = userPicks.length;
-  }
-  return Array.from({length: count}, createAdvert);
-};
+const createAdverts = () => Array.from({length: SIMILAR_ADVERT_COUNT}, createAdvert);
 
-// eslint-disable-next-line no-console
-console.log(createAdverts(ADVERTS_AMOUNT));
+export {createAdverts};
+
