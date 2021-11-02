@@ -1,7 +1,7 @@
 import {
   getRandomArrayElement,
   getSomeRandomArrayElements
-} from '/js/utils.js';
+} from './utils.js';
 
 const TITLE_LIST = ['Заголовок-1', 'Заголовок-2', 'Заголовок-3', 'Заголовок-4'];
 const TYPE_LIST = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
@@ -25,7 +25,6 @@ const LAT_MIN = 35.65000;
 const LAT_MAX = 35.70000;
 const LNG_MIN = 139.70000;
 const LNG_MAX = 139.80000;
-const SIMILAR_ADVERT_COUNT = 10;
 
 let userPicks = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10'];
 
@@ -64,7 +63,7 @@ const createAdvert = () => {
   };
 };
 
-const createAdverts = () => Array.from({length: SIMILAR_ADVERT_COUNT}, createAdvert);
+const createAdverts = (count) => Array.from({length: count}, createAdvert);
 
 export {createAdverts};
 
