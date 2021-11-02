@@ -1,84 +1,91 @@
 import {createAdverts} from './data.js';
 
-const map = document.querySelector('.map');
-
-
+const map = document.querySelector('.map__canvas');
 const cardTemplate = document.querySelector('#card')
-  .content;
+  .content
+  .querySelector('.popup');
 
-let popupTemplate = cardTemplate.querySelector('.popup');
+const getCardType = (advert) => {
+  switch (advert.offer.type) {
+    case 'flat':
+      return 'Квартира';
 
-const popupPhotos = popupTemplate.querySelector('.popup__photos');
+    case 'bungalow':
+      return 'Бунгало';
 
-const photoElement = popupPhotos.querySelector('.popup__photo');
+    case 'house':
+      return 'Дом';
 
-const similarAdverts = createAdverts();
+    case 'palace':
+      return 'Дворец';
 
-similarAdverts.forEach((advert) => {
-  const advertElement = popupTemplate.cloneNode(true);
+    case 'hotel':
+      return 'Отель';
+
+    default:
+      return 'Свинарник! Как у меня дома :)'; // throw new Error('Unknown card type ' + advert.offer.type);
+  }
+};
+
+const createCard = (advert) => {
+  const advertElement = cardTemplate.cloneNode(true);
+  const advertType = advertElement.querySelector('.popup__type');
+  const popupPhotos = advertElement.querySelector('.popup__photos');
+  const photoElement = advertElement.querySelector('.popup__photo');
+  const popupFeatures = advertElement.querySelector('.popup__features');
+
+
   advertElement.querySelector('.popup__avatar').src = advert.author.avatar;
   advertElement.querySelector('.popup__title').textContent = advert.offer.title;
   advertElement.querySelector('.popup__text--address').textContent = advert.offer.address;
   advertElement.querySelector('.popup__text--price').textContent = `${advert.offer.price} ₽/ночь`;
-
-  switch (advert.offer.type) {
-    case 'flat':
-      advertElement.querySelector('.popup__type').textContent = 'Квартира';
-      break;
-
-    case 'bungalow':
-      advertElement.querySelector('.popup__type').textContent = 'Бунгало';
-      break;
-
-    case 'house':
-      advertElement.querySelector('.popup__type').textContent = 'Дом';
-      break;
-
-    case 'palace':
-      advertElement.querySelector('.popup__type').textContent = 'Дворец';
-      break;
-
-    case 'hotel':
-      advertElement.querySelector('.popup__type').textContent = 'Отель';
-      break;
-
-    default:
-      advertElement.querySelector('.popup__type').textContent = 'Свинарник! Как у меня дома :)';
-      break;
-  }
-
   advertElement.querySelector('.popup__text--capacity').textContent =`${advert.offer.rooms} комнаты для ${advert.offer.guests} гостей`;
   advertElement.querySelector('.popup__text--time').textContent = `Заезд после ${advert.offer.checkin}, выезд до ${advert.offer.checkin}`;
   advertElement.querySelector('.popup__features').textContent = advert.offer.features;
   advertElement.querySelector('.popup__description').textContent = advert.offer.description;
+  advertType.textContent = getCardType(advert); //Отель
 
-  // FIXME: хотела сделать так, чтобы первое фото отображалось нормально, но не получилось
-  //  переписать на рабочий вариант
-  for (const i in advert.offer.photos) {
-    if (i !== 0) {
+  if (advert.offer.features.length > 0) {
+    popupFeatures.innerHTML = '';
+    advert.offer.features.forEach((feature) => {
+      const featureItem =  document.createElement('li');
+      featureItem.classList.add('popup__feature', `popup__feature--${  feature}`);
+      popupFeatures.appendChild(featureItem);
+    });
+  }
+
+  if (advert.offer.photos.length > 0) {
+    popupPhotos.innerHTML = '';
+    advert.offer.photos.forEach((photo) => {
       const photoItem = photoElement.cloneNode(true);
-      photoItem.src = advert.offer.photos[i];
+      photoItem.src = photo;
       popupPhotos.appendChild(photoItem);
-    } else {
-      popupTemplate.querySelector('.popup__photo').src = advert.offer.photos[i];
-    }
+    });
   }
 
-  map.appendChild(advertElement);
-});
+  return advertElement;
+};
 
-//Предотвращает появление пустых элементов в обьявлении
 
-const templateFragment = document.createDocumentFragment();
+const similarAdverts = createAdverts();
 
-similarAdverts.array.forEach((element) => {
-  const templateItem = popupTemplate.querySelector(`.popup__${  element}`);
+const card = createCard(similarAdverts[0]);
+map.appendChild(card);
 
-  if (templateItem) {
-    templateFragment.append(templateItem);
-  }
 
-});
+// Предотвращает появление пустых элементов в обьявлении
+//FIXME вроде как не работает, надо проверить, не понимаю этот кусок
 
-popupTemplate = '';
-popupTemplate.appendChild(templateFragment);
+// const templateFragment = document.createDocumentFragment();
+
+// similarAdverts.array.forEach((element) => {
+//   const templateItem = popupTemplate.querySelector(`.popup__${  element}`);
+
+//   if (templateItem) {
+//     templateFragment.append(templateItem);
+//   }
+
+// });
+
+// popupTemplate = '';
+// popupTemplate.appendChild(templateFragment);
