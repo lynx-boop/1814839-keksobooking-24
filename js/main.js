@@ -1,5 +1,6 @@
 import {createAdverts} from './data.js';
 import {createCard} from './card.js';
+import './form.js';
 
 const SIMILAR_ADVERT_COUNT = 10;
 const map = document.querySelector('.map__canvas');
