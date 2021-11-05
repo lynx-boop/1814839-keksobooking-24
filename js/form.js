@@ -2,6 +2,23 @@ const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 const mapFilterElements = document.querySelectorAll('fieldset, select');
 
+const titleInput = document.querySelector('#title');
+const MIN_TITLE_LENGTH = 30;
+const MAX_TITLE_LENGTH = 100;
+
+const priceInput = document.querySelector('#price');
+const MAX_PRICE = 1000000;
+
+const room = document.querySelector('#room_number');
+const capacity = document.querySelector('#capacity');
+const capacityOptions = capacity.querySelectorAll('option');
+const roomsCapacity = {
+  1: [1],
+  2: [1, 2],
+  3: [1, 2, 3],
+  100: [0],
+};
+
 //неактивное состояние
 const disableFormElements = (elements) => elements.forEach((element) => element.disabled = true);
 
@@ -25,17 +42,7 @@ const activateElements = () => {
 };
 
 // валидаторы;
-const titleInput = document.querySelector('#title');
-const MIN_TITLE_LENGTH = 30;
-const MAX_TITLE_LENGTH = 100;
-
-const priceInput = document.querySelector('#price');
-const MAX_PRICE = 1000000;
-
-const roomNumber = document.querySelector('#room_number');
-const capacity = document.querySelector('#capacity');
-
-titleInput.addEventListener('input', () => {
+const onTitleInput = () => {
   const valueLength = titleInput.value.length;
   if (valueLength < MIN_TITLE_LENGTH) {
     titleInput.setCustomValidity(`Еще ${MIN_TITLE_LENGTH - valueLength} симв.`);
@@ -46,51 +53,41 @@ titleInput.addEventListener('input', () => {
   }
 
   titleInput.reportValidity();
-});
+};
 
-priceInput.addEventListener('input', () => {
+const onPriceInput = () => {
   if (priceInput.value > MAX_PRICE) {
     priceInput.setCustomValidity('Цена слишком большая! Максимальная цена - 1.000.000');
   } else {
     priceInput.setCustomValidity('');
   }
+
   priceInput.reportValidity();
-});
-
-capacity[0].disabled = true;
-capacity[1].disabled = true;
-capacity[3].disabled = true;
-capacity[2].selected = true;
-
-roomNumber.onchange = (event) => {
-  switch (event.target.value) {
-    case '1':
-      capacity[0].disabled = true;
-      capacity[1].disabled = true;
-      capacity[2].disabled = false;
-      capacity[3].disabled = true;
-      capacity[2].selected = true;
-      break;
-    case '2':
-      capacity[0].disabled = true;
-      capacity[1].disabled = false;
-      capacity[2].disabled = false;
-      capacity[3].disabled = true;
-      capacity[2].selected = true;
-      break;
-    case '3':
-      capacity[0].disabled = false;
-      capacity[1].disabled = false;
-      capacity[2].disabled = false;
-      capacity[3].disabled = true;
-      capacity[2].selected = true;
-      break;
-    case '100':
-      capacity[0].disabled = true;
-      capacity[1].disabled = true;
-      capacity[2].disabled = true;
-      capacity[3].disabled = false;
-      capacity[3].selected = true;
-      break;
-  }
 };
+
+const onRoomChange = () => {
+  const roomValue = Number(room.value);
+
+  const currentRoomCapacity = roomsCapacity[roomValue];
+  capacity.value = currentRoomCapacity[0];
+
+  capacityOptions.forEach((option) => {
+    if (currentRoomCapacity.includes(Number(option.value))) {
+      option.disabled = false;
+    } else {
+      option.disabled = true;
+    }
+  });
+};
+
+const syncCapacity = () => onRoomChange();
+
+const setFormListeners = () => {
+  syncCapacity();
+  titleInput.addEventListener('input', onTitleInput);
+  priceInput.addEventListener('input', onPriceInput);
+  room.addEventListener('change', onRoomChange);
+};
+
+export {setFormListeners};
+
