@@ -8,16 +8,21 @@ const MAX_TITLE_LENGTH = 100;
 
 const priceInput = document.querySelector('#price');
 const MAX_PRICE = 1000000;
+let minPrice = 1000;
 
 const room = document.querySelector('#room_number');
 const capacity = document.querySelector('#capacity');
 const capacityOptions = capacity.querySelectorAll('option');
+const housingType = document.querySelector('#type');
 const roomsCapacity = {
   1: [1],
   2: [1, 2],
   3: [1, 2, 3],
   100: [0],
 };
+
+const timeIn = document.querySelector('#timein');
+const timeOut = document.querySelector('#timeout');
 
 //неактивное состояние
 const disableFormElements = (elements) => elements.forEach((element) => element.disabled = true);
@@ -58,6 +63,8 @@ const onTitleInput = () => {
 const onPriceInput = () => {
   if (priceInput.value > MAX_PRICE) {
     priceInput.setCustomValidity('Цена слишком большая! Максимальная цена - 1.000.000');
+  } else if (priceInput.value < minPrice) {
+    priceInput.setCustomValidity(`Цена слишком маленькая! Минимальная цена - ${minPrice}`);
   } else {
     priceInput.setCustomValidity('');
   }
@@ -82,12 +89,54 @@ const onRoomChange = () => {
 
 const syncCapacity = () => onRoomChange();
 
+const minPriceByType = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000,
+};
+
+const onHousingTypeChange = () => {
+  const housingValue = housingType.value;
+
+  minPrice = minPriceByType[housingValue];
+  priceInput.placeholder = minPrice;
+};
+
+const syncHousingType = () => onHousingTypeChange();
+
+timeIn.onchange = (event) => {
+  switch (event.target.value) {
+    case  '13:00':
+      timeOut[1].selected = true;
+      break;
+
+    case  '14:00':
+      timeOut[2].selected = true;
+      break;
+  }
+};
+
+timeOut.onchange = (event) => {
+  switch (event.target.value) {
+    case  '14:00':
+      timeIn[1].selected = true;
+      break;
+
+    default:
+      timeIn[0].selected = true;
+      break;
+  }
+};
+
 const setFormListeners = () => {
   syncCapacity();
+  syncHousingType();
   titleInput.addEventListener('input', onTitleInput);
   priceInput.addEventListener('input', onPriceInput);
   room.addEventListener('change', onRoomChange);
+  housingType.addEventListener('change', onHousingTypeChange);
 };
 
 export {setFormListeners};
-
