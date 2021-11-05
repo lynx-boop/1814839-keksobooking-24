@@ -106,37 +106,28 @@ const onHousingTypeChange = () => {
 
 const syncHousingType = () => onHousingTypeChange();
 
-timeIn.onchange = (event) => {
-  switch (event.target.value) {
-    case  '13:00':
-      timeOut[1].selected = true;
-      break;
-
-    case  '14:00':
-      timeOut[2].selected = true;
-      break;
-  }
+const onTimeInChange = () => {
+  timeOut.value = timeIn.value;
 };
 
-timeOut.onchange = (event) => {
-  switch (event.target.value) {
-    case  '14:00':
-      timeIn[1].selected = true;
-      break;
-
-    default:
-      timeIn[0].selected = true;
-      break;
-  }
+const onTimeOutChange = () => {
+  timeIn.value = timeOut.value;
 };
+
+const syncTimeIn = () => onTimeInChange();
+const syncTimeOut = () => onTimeOutChange();
 
 const setFormListeners = () => {
   syncCapacity();
   syncHousingType();
+  syncTimeIn();
+  syncTimeOut();
   titleInput.addEventListener('input', onTitleInput);
   priceInput.addEventListener('input', onPriceInput);
   room.addEventListener('change', onRoomChange);
   housingType.addEventListener('change', onHousingTypeChange);
+  timeIn.addEventListener('change', onTimeInChange);
+  timeOut.addEventListener('change', onTimeOutChange);
 };
 
 export {setFormListeners};
