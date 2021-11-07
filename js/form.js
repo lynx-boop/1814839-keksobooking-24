@@ -36,8 +36,9 @@ const disableElements = () => {
   mapFilters.classList.add('.map__filters--disabled');
 
   disableFormElements(mapFilterElements);
-  disableFormElements(adForm);
 };
+
+disableElements();
 
 //активное состояние
 const activateFormElements = (elements) => elements.forEach((element) => element.disabled = false);
@@ -47,7 +48,6 @@ const activateElements = () => {
   mapFilters.classList.remove('.map__filters--disabled');
 
   activateFormElements(mapFilterElements);
-  activateFormElements(adForm);
 };
 
 // валидаторы;
@@ -130,3 +130,4 @@ const setFormListeners = () => {
 };
 
 export {setFormListeners};
+export {activateElements};
