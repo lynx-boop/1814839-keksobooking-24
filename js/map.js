@@ -1,6 +1,6 @@
 import {activateElements} from './form.js';
 
-const createMap = (lat, lng, scale, selector) => {
+const createMap = (lat, lng, mapZoom, selector) => {
   const mapCanvas = L.map(selector)
     .on('load', () => {
       activateElements();
@@ -9,7 +9,7 @@ const createMap = (lat, lng, scale, selector) => {
     .setView({
       lat: lat,
       lng: lng,
-    }, scale);
+    }, mapZoom);
 
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -26,24 +26,24 @@ const createPinIcon = (url, size, anchor) => L.icon({
   iconAnchor: anchor,
 });
 
-const createPin = (lat, lng, drg, icn, map) => {
+const createPin = (lat, lng, draggable, icon, cityMap) => {
   const pin = L.marker(
     {
       lat: lat,
       lng: lng,
     },
     {
-      draggable: drg,
-      icon: icn,
+      draggable: draggable,
+      icon: icon,
     },
   );
-  pin.addTo(map);
+  pin.addTo(cityMap);
   return pin;
 };
 
-const createPinBaloon = (lat, lng, baloonCntnt, icn, map) => {
-  const p = createPin(lat, lng, false, icn, map);
-  p.bindPopup(baloonCntnt);
+const createPinBaloon = (lat, lng, baloonCntnt, icon, cityMap) => {
+  const pin = createPin(lat, lng, false, icon, cityMap);
+  pin.bindPopup(baloonCntnt);
 };
 
 export {
