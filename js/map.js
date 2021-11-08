@@ -55,7 +55,7 @@ const pinsGroup = L.layerGroup().addTo(map);
 const data = createAdverts(SIMILAR_ADVERT_COUNT);
 
 // создает 10 пинов
-const renderRegularPins = (element) => {
+const renderRegularPin = (element) => {
   const regularPinIcon = L.icon ({
     iconUrl: './img/pin.svg',
     iconSize: [REGULAR_PIN_SIZE, REGULAR_PIN_SIZE],
@@ -68,7 +68,7 @@ const renderRegularPins = (element) => {
       lng: element.location.lng,
     },
     {
-      regularPinIcon,
+      icon: regularPinIcon,
     },
   );
 
@@ -77,9 +77,11 @@ const renderRegularPins = (element) => {
     .bindPopup(createCard(element));
 };
 
-data.forEach((element) => {
-  renderRegularPins(element);
-});
+const renderPins = () => {
+  data.forEach((element) => {
+    renderRegularPin(element);
+  });
+};
 
 // отдает координаты в инпут адреса
 address.value = `${tokyo.lat.toFixed(5)}, ${tokyo.lng.toFixed(5)}`;
@@ -104,8 +106,8 @@ const initMap = () => {
       attribution: tileLayerAttribution,
     },
   ).addTo(map);
+
+  renderPins();
 };
 
-export {
-  initMap
-};
+export {initMap};
