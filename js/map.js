@@ -33,70 +33,60 @@ L.tileLayer(
   },
 ).addTo(map);
 
-
-const createPinIcon = (url, size, anchor) => L.icon({
-  iconUrl: url,
-  iconSize: size,
-  iconAnchor: anchor,
+const mainPinIcon = L.icon ({
+  iconUrl: './img/main-pin.svg',
+  iconSize: [MAIN_PIN_SIZE, MAIN_PIN_SIZE],
+  iconAnchor: [MAIN_PIN_SIZE / 2 , MAIN_PIN_SIZE],
 });
 
-const createPin = (lat, lng, draggable, icon, cityMap) => {
-  const pin = L.marker(
-    {
-      lat: lat,
-      lng: lng,
-    },
-    {
-      draggable: draggable,
-      icon: icon,
-    },
-  );
-  pin.addTo(cityMap);
-  return pin;// не надо ретурнами, надо как в образце
-};
+const mainPin = L.marker(
+  {
+    lat: tokyo.lat,
+    lng: tokyo.lng,
+  },
+  {
+    draggable: true,
+    icon: mainPinIcon,
+  },
+).addTo(map);
 
-const createPinBaloon = (lat, lng, baloonCntnt, icon, cityMap) => {
-  const pin = createPin(lat, lng, false, icon, cityMap);
-  pin.bindPopup(baloonCntnt);
-};
-
-const mainPinIcon = createPinIcon(
-  './img/main-pin.svg',
-  [MAIN_PIN_SIZE, MAIN_PIN_SIZE],
-  [MAIN_PIN_SIZE / 2 , MAIN_PIN_SIZE],
-);
-
-const regularPinIcon = createPinIcon(
-  './img/pin.svg',
-  [REGULAR_PIN_SIZE, REGULAR_PIN_SIZE],
-  [REGULAR_PIN_SIZE / 2, REGULAR_PIN_SIZE],
-);
-
-const mainPin = createPin(
-  tokyo.lat,
-  tokyo.lng,
-  true,
-  mainPinIcon,
-  map,
-);
-
-mainPin.on('moveend', (evt) => {
-  address.value = `${evt.target._latlng.lat.toFixed(5)}, ${evt.target._latlng.lng.toFixed(5)}`;
-});
+const pinsGroup = L.layerGroup().addTo(map);
 
 const data = createAdverts(SIMILAR_ADVERT_COUNT);
 
-data.forEach((element) => {
-  createPinBaloon(
-    element.location.lat,
-    element.location.lng,
-    createCard(element),
-    regularPinIcon,
-    map,
+// создает 10 пинов
+const renderRegularPins = (element) => {
+  const regularPinIcon = L.icon ({
+    iconUrl: './img/pin.svg',
+    iconSize: [REGULAR_PIN_SIZE, REGULAR_PIN_SIZE],
+    iconAnchor: [REGULAR_PIN_SIZE / 2, REGULAR_PIN_SIZE],
+  });
+
+  const regularPin = L.marker(
+    {
+      lat: element.location.lat,
+      lng: element.location.lng,
+    },
+    {
+      regularPinIcon,
+    },
   );
+
+  regularPin
+    .addTo(pinsGroup)
+    .bindPopup(createCard(element));
+};
+
+data.forEach((element) => {
+  renderRegularPins(element);
 });
 
+// отдает координаты в инпут адреса
 address.value = `${tokyo.lat.toFixed(5)}, ${tokyo.lng.toFixed(5)}`;
+mainPin.on('moveend', (evt) => {
+  address.value = `${evt.target._latlng.lat.toFixed(5)}, ${evt.target._latlng.lng.toFixed(5)}`;
+});
+//
 
 const initMap = () => {
   map.on('whenReady', () => {
