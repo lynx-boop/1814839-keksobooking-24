@@ -115,6 +115,19 @@ const onTimeOutChange = () => {
 const syncTimeIn = () => onTimeInChange();
 const syncTimeOut = () => onTimeOutChange();
 
+const onFormSubmit = (evt) => {
+  evt.preventDefault();
+
+  const formData = new FormData(adForm);
+
+  fetch('https://24.javascript.pages.academy/keksobooking',
+    {
+      method: 'POST',
+      body: formData,
+    },
+  );
+};
+
 //управляющий код
 const setFormListeners = () => {
   syncCapacity();
@@ -127,6 +140,7 @@ const setFormListeners = () => {
   housingType.addEventListener('change', onHousingTypeChange);
   timeIn.addEventListener('change', onTimeInChange);
   timeOut.addEventListener('change', onTimeOutChange);
+  adForm.addEventListener('submit', onFormSubmit);
 };
 
 export {setFormListeners};

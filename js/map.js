@@ -1,19 +1,18 @@
-import {activateElements} from './form.js';
-import {createAdverts} from './data.js';
+import {activateElements, setFormListeners} from './form.js';
 import {createCard} from './card.js';
 
+const adForm = document.querySelector('.ad-form');
 const address = document.querySelector('#address');
 const tileLayer = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const tileLayerAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
-const SIMILAR_ADVERT_COUNT = 10;
 const MAIN_PIN_SIZE = 52;
 const REGULAR_PIN_SIZE = 40;
 
 const tokyo = {
-  lat: 35.658581,
-  lng: 139.745438,
-  mapZoom: 12,
+  lat: 35.675,
+  lng: 139.745,
+  mapZoom: 13,
 };
 
 const map = L.map('map-canvas')
@@ -50,9 +49,15 @@ const mainPin = L.marker(
   },
 ).addTo(map);
 
-const pinsGroup = L.layerGroup().addTo(map);
+const resetMainPin = () => {
+  mainPin.lat = tokyo.lat;
+  mainPin.lng = tokyo.lng;
+  setFormListeners();
+};
 
-const data = createAdverts(SIMILAR_ADVERT_COUNT);
+adForm.addEventListener('reset', resetMainPin);
+
+const pinsGroup = L.layerGroup().addTo(map);
 
 // создает 10 пинов
 const renderRegularPin = (element) => {
@@ -77,7 +82,7 @@ const renderRegularPin = (element) => {
     .bindPopup(createCard(element));
 };
 
-const renderPins = () => {
+const renderPins = (data) => {
   data.forEach((element) => {
     renderRegularPin(element);
   });
@@ -88,7 +93,6 @@ address.value = `${tokyo.lat.toFixed(5)}, ${tokyo.lng.toFixed(5)}`;
 mainPin.on('moveend', (evt) => {
   address.value = `${evt.target._latlng.lat.toFixed(5)}, ${evt.target._latlng.lng.toFixed(5)}`;
 });
-//
 
 const initMap = () => {
   map.on('whenReady', () => {
@@ -107,7 +111,7 @@ const initMap = () => {
     },
   ).addTo(map);
 
-  renderPins();
+  // renderPins();
 };
 
-export {initMap};
+export {initMap, renderPins, resetMainPin};
