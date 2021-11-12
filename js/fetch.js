@@ -1,11 +1,15 @@
-import {renderPins} from './map.js';
+const API_URL = 'https://24.javascript.pages.academy/keksobooking/data';
 
-const ADVERTS_COUNT = 10;
-
-const loadData = () => {
-  fetch('https://24.javascript.pages.academy/keksobooking/data')
-    .then((response) => response.json())
-    .then((adverts) => renderPins(adverts.slice(0, ADVERTS_COUNT)));
+const loadData = (onSuccess, onFail) => {
+  fetch(`${API_URL}/data`)
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error ('Ошибка полученя данных!');
+    })
+    .then((data) => onSuccess(data))
+    .catch(() => onFail);
 };
 
 export {loadData};

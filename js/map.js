@@ -1,13 +1,15 @@
-import {activateElements, setFormListeners} from './form.js';
+import {activateElements} from './form.js';
 import {createCard} from './card.js';
+import {loadData} from './fetch.js';
+import {showAlert} from './utils.js';
 
-const adForm = document.querySelector('.ad-form');
 const address = document.querySelector('#address');
 const tileLayer = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const tileLayerAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
 const MAIN_PIN_SIZE = 52;
 const REGULAR_PIN_SIZE = 40;
+const OFFER_NUMBER = 10;
 
 const tokyo = {
   lat: 35.675,
@@ -52,12 +54,13 @@ const mainPin = L.marker(
 const resetMainPin = () => {
   mainPin.lat = tokyo.lat;
   mainPin.lng = tokyo.lng;
-  setFormListeners();
 };
 
-adForm.addEventListener('reset', resetMainPin);
-
 const pinsGroup = L.layerGroup().addTo(map);
+
+const setAddress = () => {
+  address.value = `${tokyo.lat.toFixed(5)}, ${tokyo.lng.toFixed(5)}`;
+};
 
 // создает 10 пинов
 const renderRegularPin = (element) => {
@@ -89,20 +92,29 @@ const renderPins = (data) => {
 };
 
 // отдает координаты в инпут адреса
-address.value = `${tokyo.lat.toFixed(5)}, ${tokyo.lng.toFixed(5)}`;
-mainPin.on('moveend', (evt) => {
+mainPin.on('move', (evt) => {
   address.value = `${evt.target._latlng.lat.toFixed(5)}, ${evt.target._latlng.lng.toFixed(5)}`;
 });
 
-const initMap = () => {
-  map.on('whenReady', () => {
-    activateElements();
-  })
+const onDataLoad = (offers) => {
+  renderPins(offers.slise(0, OFFER_NUMBER));
+};
 
-    .setView({
-      lat: tokyo.lat,
-      lng: tokyo.lng,
-    }, tokyo.mapZoom);
+const onDataError = () => {
+  showAlert();
+};
+
+const initMap = () => {
+  map.whenReady (() => {
+    activateElements();
+    setAddress();
+    loadData(onDataLoad, onDataError);
+  });
+
+  map.setView({
+    lat: tokyo.lat,
+    lng: tokyo.lng,
+  }, tokyo.mapZoom);
 
   L.tileLayer(
     tileLayer,
@@ -110,8 +122,15 @@ const initMap = () => {
       attribution: tileLayerAttribution,
     },
   ).addTo(map);
-
-  // renderPins();
 };
 
-export {initMap, renderPins, resetMainPin};
+const resetMap = () => {
+  map.setView({
+    lat: tokyo.lat,
+    lng: tokyo.lng,
+  }, tokyo.mapZoom);
+
+  resetMainPin();
+};
+
+export {initMap, renderPins, resetMainPin, resetMap};

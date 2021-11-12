@@ -1,3 +1,5 @@
+import {resetMap} from './map.js';
+
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
@@ -141,6 +143,7 @@ const setFormListeners = () => {
   timeIn.addEventListener('change', onTimeInChange);
   timeOut.addEventListener('change', onTimeOutChange);
   adForm.addEventListener('submit', onFormSubmit);
+  adForm.addEventListener('reset', resetMap);
 };
 
 export {setFormListeners};
