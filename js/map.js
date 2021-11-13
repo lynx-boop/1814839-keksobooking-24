@@ -1,6 +1,6 @@
 import {activateElements} from './form.js';
 import {createCard} from './card.js';
-import {loadData} from './fetch.js';
+import {loadData} from './api.js';
 import {showAlert} from './utils.js';
 
 const address = document.querySelector('#address');
@@ -18,10 +18,6 @@ const tokyo = {
 };
 
 const map = L.map('map-canvas')
-  .on('load', () => {
-    activateElements();
-  })
-
   .setView({
     lat: tokyo.lat,
     lng: tokyo.lng,
@@ -50,11 +46,6 @@ const mainPin = L.marker(
     icon: mainPinIcon,
   },
 ).addTo(map);
-
-const resetMainPin = () => {
-  mainPin.lat = tokyo.lat;
-  mainPin.lng = tokyo.lng;
-};
 
 const pinsGroup = L.layerGroup().addTo(map);
 
@@ -97,7 +88,7 @@ mainPin.on('move', (evt) => {
 });
 
 const onDataLoad = (offers) => {
-  renderPins(offers.slise(0, OFFER_NUMBER));
+  renderPins(offers.slice(0, OFFER_NUMBER));
 };
 
 const onDataError = () => {
@@ -124,13 +115,16 @@ const initMap = () => {
   ).addTo(map);
 };
 
-const resetMap = () => {
-  map.setView({
-    lat: tokyo.lat,
-    lng: tokyo.lng,
-  }, tokyo.mapZoom);
+// const resetMap = () => {
+//   map.setView({
+//     lat: tokyo.lat,
+//     lng: tokyo.lng,
+//   }, tokyo.mapZoom);
 
-  resetMainPin();
-};
+//   mainPin.lat = tokyo.lat;
+//   mainPin.lng = tokyo.lng;
 
-export {initMap, renderPins, resetMainPin, resetMap};
+//   setAddress();
+// };
+
+export {initMap, renderPins};
