@@ -1,11 +1,13 @@
-import {activateElements} from './form.js';
-import {createCard} from './card.js';
-import {loadData} from './api.js';
-import {showAlert} from './utils.js';
+import { activateElements } from './form.js';
+import { createCard } from './card.js';
+import { loadData } from './api.js';
+import { showAlert } from './utils.js';
 
 const address = document.querySelector('#address');
 const tileLayer = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const tileLayerAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
+let offers = []; // сложим сюда точки на карте
 
 const MAIN_PIN_SIZE = 52;
 const REGULAR_PIN_SIZE = 40;
@@ -30,10 +32,10 @@ L.tileLayer(
   },
 ).addTo(map);
 
-const mainPinIcon = L.icon ({
+const mainPinIcon = L.icon({
   iconUrl: './img/main-pin.svg',
   iconSize: [MAIN_PIN_SIZE, MAIN_PIN_SIZE],
-  iconAnchor: [MAIN_PIN_SIZE / 2 , MAIN_PIN_SIZE],
+  iconAnchor: [MAIN_PIN_SIZE / 2, MAIN_PIN_SIZE],
 });
 
 const mainPin = L.marker(
@@ -55,7 +57,7 @@ const setAddress = () => {
 
 // создает 10 пинов
 const renderRegularPin = (element) => {
-  const regularPinIcon = L.icon ({
+  const regularPinIcon = L.icon({
     iconUrl: './img/pin.svg',
     iconSize: [REGULAR_PIN_SIZE, REGULAR_PIN_SIZE],
     iconAnchor: [REGULAR_PIN_SIZE / 2, REGULAR_PIN_SIZE],
@@ -87,7 +89,8 @@ mainPin.on('move', (evt) => {
   address.value = `${evt.target._latlng.lat.toFixed(5)}, ${evt.target._latlng.lng.toFixed(5)}`;
 });
 
-const onDataLoad = (offers) => {
+const onDataLoad = (data) => {
+  offers = data;
   renderPins(offers.slice(0, OFFER_NUMBER));
 };
 
@@ -96,7 +99,7 @@ const onDataError = () => {
 };
 
 const initMap = () => {
-  map.whenReady (() => {
+  map.whenReady(() => {
     activateElements();
     setAddress();
     loadData(onDataLoad, onDataError);
@@ -113,6 +116,7 @@ const initMap = () => {
       attribution: tileLayerAttribution,
     },
   ).addTo(map);
+
 };
 
 const resetMap = () => {
@@ -125,4 +129,8 @@ const resetMap = () => {
   mainPin.lng = tokyo.lng;
 };
 
-export {initMap, renderPins, setAddress, resetMap};
+const resetRegularPins = () => {
+  pinsGroup.eachLayer((layer) => { layer.remove(); });
+};
+
+export { initMap, renderPins, setAddress, resetMap, resetRegularPins, offers, OFFER_NUMBER };
