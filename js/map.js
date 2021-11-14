@@ -1,26 +1,23 @@
 import {activateElements} from './form.js';
-import {createAdverts} from './data.js';
 import {createCard} from './card.js';
+import {loadData} from './api.js';
+import {showAlert} from './utils.js';
 
 const address = document.querySelector('#address');
 const tileLayer = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const tileLayerAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
-const SIMILAR_ADVERT_COUNT = 10;
 const MAIN_PIN_SIZE = 52;
 const REGULAR_PIN_SIZE = 40;
+const OFFER_NUMBER = 10;
 
 const tokyo = {
-  lat: 35.658581,
-  lng: 139.745438,
-  mapZoom: 12,
+  lat: 35.675,
+  lng: 139.745,
+  mapZoom: 13,
 };
 
 const map = L.map('map-canvas')
-  .on('load', () => {
-    activateElements();
-  })
-
   .setView({
     lat: tokyo.lat,
     lng: tokyo.lng,
@@ -52,7 +49,9 @@ const mainPin = L.marker(
 
 const pinsGroup = L.layerGroup().addTo(map);
 
-const data = createAdverts(SIMILAR_ADVERT_COUNT);
+const setAddress = () => {
+  address.value = `${tokyo.lat.toFixed(5)}, ${tokyo.lng.toFixed(5)}`;
+};
 
 // создает 10 пинов
 const renderRegularPin = (element) => {
@@ -77,28 +76,36 @@ const renderRegularPin = (element) => {
     .bindPopup(createCard(element));
 };
 
-const renderPins = () => {
+const renderPins = (data) => {
   data.forEach((element) => {
     renderRegularPin(element);
   });
 };
 
 // отдает координаты в инпут адреса
-address.value = `${tokyo.lat.toFixed(5)}, ${tokyo.lng.toFixed(5)}`;
-mainPin.on('moveend', (evt) => {
+mainPin.on('move', (evt) => {
   address.value = `${evt.target._latlng.lat.toFixed(5)}, ${evt.target._latlng.lng.toFixed(5)}`;
 });
-//
+
+const onDataLoad = (offers) => {
+  renderPins(offers.slice(0, OFFER_NUMBER));
+};
+
+const onDataError = () => {
+  showAlert();
+};
 
 const initMap = () => {
-  map.on('whenReady', () => {
+  map.whenReady (() => {
     activateElements();
-  })
+    setAddress();
+    loadData(onDataLoad, onDataError);
+  });
 
-    .setView({
-      lat: tokyo.lat,
-      lng: tokyo.lng,
-    }, tokyo.mapZoom);
+  map.setView({
+    lat: tokyo.lat,
+    lng: tokyo.lng,
+  }, tokyo.mapZoom);
 
   L.tileLayer(
     tileLayer,
@@ -106,8 +113,16 @@ const initMap = () => {
       attribution: tileLayerAttribution,
     },
   ).addTo(map);
-
-  renderPins();
 };
 
-export {initMap};
+const resetMap = () => {
+  map.setView({
+    lat: tokyo.lat,
+    lng: tokyo.lng,
+  }, tokyo.mapZoom);
+
+  mainPin.lat = tokyo.lat;
+  mainPin.lng = tokyo.lng;
+};
+
+export {initMap, renderPins, setAddress, resetMap};

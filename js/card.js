@@ -25,7 +25,7 @@ const createCard = (advert) => {
   advertElement.querySelector('.popup__description').textContent = advert.offer.description;
   advertType.textContent = offerTypes[advert.offer.type];
 
-  if (advert.offer.features.length > 0) {
+  if ('features' in advert.offer && advert.offer.features.length > 0) {
     popupFeatures.innerHTML = '';
     advert.offer.features.forEach((feature) => {
       const featureItem =  document.createElement('li');
@@ -34,7 +34,7 @@ const createCard = (advert) => {
     });
   }
 
-  if (advert.offer.photos.length > 0) {
+  if ('photos' in advert.offer && advert.offer.photos.length > 0) {
     popupPhotos.innerHTML = '';
     advert.offer.photos.forEach((photo) => {
       const photoItem = photoElement.cloneNode(true);

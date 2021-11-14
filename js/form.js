@@ -1,3 +1,7 @@
+import {setAddress, resetMap} from './map.js';
+import {sendData} from './api.js';
+import {renderSuccessPopup, renderErrorPopup} from './popup.js';
+
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
@@ -115,6 +119,28 @@ const onTimeOutChange = () => {
 const syncTimeIn = () => onTimeInChange();
 const syncTimeOut = () => onTimeOutChange();
 
+const resetForms = () => {
+  adForm.reset();
+  setAddress();
+  resetMap();
+};
+
+const onSendLoad = () => {
+  resetForms();
+  renderSuccessPopup();
+};
+
+const onSendError = () => {
+  renderErrorPopup();
+};
+
+const onFormSubmit = (evt) => {
+  evt.preventDefault();
+  const formData = new FormData(adForm);
+
+  sendData(onSendLoad, onSendError, formData);
+};
+
 //управляющий код
 const setFormListeners = () => {
   syncCapacity();
@@ -127,6 +153,8 @@ const setFormListeners = () => {
   housingType.addEventListener('change', onHousingTypeChange);
   timeIn.addEventListener('change', onTimeInChange);
   timeOut.addEventListener('change', onTimeOutChange);
+  adForm.addEventListener('submit', onFormSubmit);
+  adForm.addEventListener('reset', resetForms);
 };
 
 export {setFormListeners};
