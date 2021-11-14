@@ -115,16 +115,14 @@ const initMap = () => {
   ).addTo(map);
 };
 
-// const resetMap = () => {
-//   map.setView({
-//     lat: tokyo.lat,
-//     lng: tokyo.lng,
-//   }, tokyo.mapZoom);
+const resetMap = () => {
+  map.setView({
+    lat: tokyo.lat,
+    lng: tokyo.lng,
+  }, tokyo.mapZoom);
 
-//   mainPin.lat = tokyo.lat;
-//   mainPin.lng = tokyo.lng;
+  mainPin.lat = tokyo.lat;
+  mainPin.lng = tokyo.lng;
+};
 
-//   setAddress();
-// };
-
-export {initMap, renderPins};
+export {initMap, renderPins, setAddress, resetMap};

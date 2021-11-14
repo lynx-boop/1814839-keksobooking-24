@@ -1,4 +1,4 @@
-// import {resetMap} from './map.js';
+import {setAddress, resetMap} from './map.js';
 import {sendData} from './api.js';
 import {renderSuccessPopup, renderErrorPopup} from './popup.js';
 
@@ -121,7 +121,8 @@ const syncTimeOut = () => onTimeOutChange();
 
 const resetForms = () => {
   adForm.reset();
-  // resetMap();
+  setAddress();
+  resetMap();
 };
 
 const onSendLoad = () => {
