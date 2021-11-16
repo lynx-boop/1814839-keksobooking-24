@@ -2,12 +2,14 @@ import { activateElements } from './form.js';
 import { createCard } from './card.js';
 import { loadData } from './api.js';
 import { showAlert } from './utils.js';
+import { setFilterListener } from './filters.js';
 
 const address = document.querySelector('#address');
 const tileLayer = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const tileLayerAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
-let offers = []; // сложим сюда точки на карте
+// let offers = [];
+// сложим сюда точки на карте
 
 const MAIN_PIN_SIZE = 52;
 const REGULAR_PIN_SIZE = 40;
@@ -90,8 +92,8 @@ mainPin.on('move', (evt) => {
 });
 
 const onDataLoad = (data) => {
-  offers = data;
-  renderPins(offers.slice(0, OFFER_NUMBER));
+  renderPins(data.slice(0, OFFER_NUMBER));
+  setFilterListener(data);
 };
 
 const onDataError = () => {
@@ -119,6 +121,7 @@ const initMap = () => {
 
 };
 
+//FIXME вот тут прописываю ресеты для меток, поля координат мэйнпина и карты, но они не работают :(
 const resetMap = () => {
   map.setView({
     lat: tokyo.lat,
@@ -133,4 +136,4 @@ const resetRegularPins = () => {
   pinsGroup.eachLayer((layer) => { layer.remove(); });
 };
 
-export { initMap, renderPins, setAddress, resetMap, resetRegularPins, offers, OFFER_NUMBER };
+export { initMap, renderPins, setAddress, resetMap, resetRegularPins, OFFER_NUMBER };

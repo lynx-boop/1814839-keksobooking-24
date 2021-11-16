@@ -1,6 +1,6 @@
-import {setAddress, resetMap} from './map.js';
-import {sendData} from './api.js';
-import {renderSuccessPopup, renderErrorPopup} from './popup.js';
+import { setAddress, resetMap } from './map.js';
+import { sendData } from './api.js';
+import { renderSuccessPopup, renderErrorPopup } from './popup.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -60,7 +60,7 @@ const onTitleInput = () => {
   if (valueLength < MIN_TITLE_LENGTH) {
     titleInput.setCustomValidity(`Еще ${MIN_TITLE_LENGTH - valueLength} симв.`);
   } else if (valueLength > MAX_TITLE_LENGTH) {
-    titleInput.setCustomValidity(`Удалите лишние ${valueLength - MAX_TITLE_LENGTH } симв.`);
+    titleInput.setCustomValidity(`Удалите лишние ${valueLength - MAX_TITLE_LENGTH} симв.`);
   } else {
     titleInput.setCustomValidity('');
   }
@@ -68,7 +68,7 @@ const onTitleInput = () => {
   titleInput.reportValidity();
 };
 
-const onPriceInput = () => {
+const onpriceInput = () => {
   const minPrice = priceInput.min;
 
   if (priceInput.value > MAX_PRICE) {
@@ -148,7 +148,7 @@ const setFormListeners = () => {
   syncTimeIn();
   syncTimeOut();
   titleInput.addEventListener('input', onTitleInput);
-  priceInput.addEventListener('input', onPriceInput);
+  priceInput.addEventListener('input', onpriceInput);
   room.addEventListener('change', onRoomChange);
   housingType.addEventListener('change', onHousingTypeChange);
   timeIn.addEventListener('change', onTimeInChange);
@@ -157,5 +157,5 @@ const setFormListeners = () => {
   adForm.addEventListener('reset', resetForms);
 };
 
-export {setFormListeners};
-export {activateElements};
+export { setFormListeners };
+export { activateElements };
