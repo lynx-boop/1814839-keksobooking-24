@@ -18,6 +18,8 @@ const housingType = document.querySelector('#type');
 const timeIn = document.querySelector('#timein');
 const timeOut = document.querySelector('#timeout');
 
+const resetButton = document.querySelector('.ad-form__reset');
+
 const roomsCapacity = {
   1: [1],
   2: [1, 2],
@@ -123,6 +125,7 @@ const resetForms = () => {
   adForm.reset();
   setAddress();
   resetMap();
+  mapFilters.reset();
 };
 
 const onSendLoad = () => {
@@ -154,7 +157,7 @@ const setFormListeners = () => {
   timeIn.addEventListener('change', onTimeInChange);
   timeOut.addEventListener('change', onTimeOutChange);
   adForm.addEventListener('submit', onFormSubmit);
-  adForm.addEventListener('reset', resetForms);
+  resetButton.addEventListener('click', resetForms);
 };
 
 export { setFormListeners };
