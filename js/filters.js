@@ -12,17 +12,17 @@ const DEFAULT_VALUE = 'any';
 const MIN_PRICE = 10000;
 const MAX_PRICE = 50000;
 
-const filterByType = (advert) => {
-  housingTypeInput.value === DEFAULT_VALUE || advert.offer.type === housingTypeInput.value;
-};
+const filterByType = (advert) => (
+  housingTypeInput.value === DEFAULT_VALUE || advert.offer.type === housingTypeInput.value
+);
 
-const filterByRooms = (advert) => {
-  roomsSelect.value === DEFAULT_VALUE || advert.offer.rooms === Number(roomsSelect.value);
-};
+const filterByRooms = (advert) => (
+  roomsSelect.value === DEFAULT_VALUE || advert.offer.rooms === Number(roomsSelect.value)
+);
 
-const filterByGuests = (advert) => {
-  guestsSelect.value === DEFAULT_VALUE || advert.offer.guests === Number(guestsSelect.value);
-};
+const filterByGuests = (advert) => (
+  guestsSelect.value === DEFAULT_VALUE || advert.offer.guests === Number(guestsSelect.value)
+);
 
 const filterByPrice = (advert) => {
   if (priceSelect.value === DEFAULT_VALUE) {
@@ -63,10 +63,7 @@ const filterAdverts = (advert) => (
   filterByType(advert) && filterByRooms(advert) && filterByGuests(advert) && filterByPrice(advert) && filterByFeatures(advert)
 );
 
-filterForm.reset();
-
 const onFilterChange = (offers) => {
-  console.log(offers);
   const filteredOffers = offers.filter(filterAdverts);
   resetRegularPins();
   renderPins(filteredOffers.slice(0, OFFER_NUMBER));

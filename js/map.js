@@ -5,34 +5,24 @@ import { showAlert } from './utils.js';
 import { setFilterListener } from './filters.js';
 
 const address = document.querySelector('#address');
-const tileLayer = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-const tileLayerAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
-// let offers = [];
-// сложим сюда точки на карте
-
+const TILE_LAYER = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const TILE_LAYER_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 const MAIN_PIN_SIZE = 52;
 const REGULAR_PIN_SIZE = 40;
 const OFFER_NUMBER = 10;
+const MAP_ZOOM = 13;
 
-const tokyo = {
-  lat: 35.675,
-  lng: 139.745,
-  mapZoom: 13,
+const Tokyo = {
+  Lat: 35.675,
+  Lng: 139.745,
 };
 
 const map = L.map('map-canvas')
   .setView({
-    lat: tokyo.lat,
-    lng: tokyo.lng,
-  }, tokyo.mapZoom);
-
-L.tileLayer(
-  tileLayer,
-  {
-    attribution: tileLayerAttribution,
-  },
-).addTo(map);
+    lat: Tokyo.Lat,
+    lng: Tokyo.Lng,
+  }, MAP_ZOOM);
 
 const mainPinIcon = L.icon({
   iconUrl: './img/main-pin.svg',
@@ -42,8 +32,8 @@ const mainPinIcon = L.icon({
 
 const mainPin = L.marker(
   {
-    lat: tokyo.lat,
-    lng: tokyo.lng,
+    lat: Tokyo.Lat,
+    lng: Tokyo.Lng,
   },
   {
     draggable: true,
@@ -54,7 +44,7 @@ const mainPin = L.marker(
 const pinsGroup = L.layerGroup().addTo(map);
 
 const setAddress = () => {
-  address.value = `${tokyo.lat.toFixed(5)}, ${tokyo.lng.toFixed(5)}`;
+  address.value = `${Tokyo.Lat.toFixed(5)}, ${Tokyo.Lng.toFixed(5)}`;
 };
 
 // создает 10 пинов
@@ -108,14 +98,14 @@ const initMap = () => {
   });
 
   map.setView({
-    lat: tokyo.lat,
-    lng: tokyo.lng,
-  }, tokyo.mapZoom);
+    lat: Tokyo.Lat,
+    lng: Tokyo.Lng,
+  }, MAP_ZOOM);
 
   L.tileLayer(
-    tileLayer,
+    TILE_LAYER,
     {
-      attribution: tileLayerAttribution,
+      attribution: TILE_LAYER_ATTRIBUTION,
     },
   ).addTo(map);
 
@@ -124,16 +114,16 @@ const initMap = () => {
 //FIXME вот тут прописываю ресеты для меток, поля координат мэйнпина и карты, но они не работают :(
 const resetMap = () => {
   map.setView({
-    lat: tokyo.lat,
-    lng: tokyo.lng,
-  }, tokyo.mapZoom);
+    lat: Tokyo.Lat,
+    lng: Tokyo.Lng,
+  }, MAP_ZOOM);
 
-  mainPin.lat = tokyo.lat;
-  mainPin.lng = tokyo.lng;
+  mainPin.setLatLng([Tokyo.Lat, Tokyo.Lng]);
+  setAddress();
 };
 
 const resetRegularPins = () => {
-  pinsGroup.eachLayer((layer) => { layer.remove(); });
+  pinsGroup.clearLayers();
 };
 
 export { initMap, renderPins, setAddress, resetMap, resetRegularPins, OFFER_NUMBER };
