@@ -154,7 +154,7 @@ const setFormListeners = () => {
   timeIn.addEventListener('change', onTimeInChange);
   timeOut.addEventListener('change', onTimeOutChange);
   adForm.addEventListener('submit', onFormSubmit);
-  // adForm.addEventListener('reset', resetForms);
+  adForm.addEventListener('reset', resetForms);
 };
 
 export { setFormListeners };
