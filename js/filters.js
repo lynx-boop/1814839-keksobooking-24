@@ -12,7 +12,6 @@ const roomsSelect = filterForm.querySelector('#housing-rooms');
 const guestsSelect = filterForm.querySelector('#housing-guests');
 const features = filterForm.querySelectorAll('.map__checkbox');
 
-
 const filterByType = (advert) => (
   housingTypeInput.value === DEFAULT_VALUE || advert.offer.type === housingTypeInput.value
 );
@@ -26,30 +25,19 @@ const filterByGuests = (advert) => (
 );
 
 const filterByPrice = (advert) => {
-  if (priceSelect.value === DEFAULT_VALUE) {
-    return true;
+  if (priceSelect.value !== DEFAULT_VALUE) {
+    switch (priceSelect.value) {
+      case 'low':
+        return (Number(advert.offer.price) <= MIN_PRICE);
+
+      case 'middle':
+        return (Number(advert.offer.price) > MIN_PRICE && Number(advert.offer.price) < MAX_PRICE);
+
+      case 'high':
+        return (Number(advert.offer.price) >= MAX_PRICE);
+    }
   }
-
-  switch (priceSelect.value) {
-    case 'low':
-      if (Number(advert.offer.price) <= MIN_PRICE) {
-        return true;
-      }
-      break;
-    case 'middle':
-      if (Number(advert.offer.price) > MIN_PRICE && Number(advert.offer.price) < MAX_PRICE) {
-        return true;
-      }
-      break;
-
-    case 'high':
-      if (Number(advert.offer.price) >= MAX_PRICE) {
-        return true;
-      }
-      break;
-  }
-
-  return false;
+  return true;
 };
 
 const filterByFeatures = (advert) => {
