@@ -39,7 +39,7 @@ const disableFormElements = (elements) => elements.forEach((element) => element.
 
 const disableElements = () => {
   adForm.classList.add('ad-form--disabled');
-  mapFilters.classList.add('.map__filters--disabled');
+  mapFilters.classList.add('map__filters--disabled');
 
   disableFormElements(mapFilterElements);
 };
@@ -51,7 +51,7 @@ const activateFormElements = (elements) => elements.forEach((element) => element
 
 const activateElements = () => {
   adForm.classList.remove('ad-form--disabled');
-  mapFilters.classList.remove('.map__filters--disabled');
+  mapFilters.classList.remove('map__filters--disabled');
 
   activateFormElements(mapFilterElements);
 };
@@ -167,5 +167,4 @@ const setFormListeners = () => {
   resetButton.addEventListener('click', onFormReset);
 };
 
-export { setFormListeners };
-export { activateElements };
+export { setFormListeners, disableElements, activateElements };
