@@ -10,6 +10,7 @@ const MAIN_PIN_SIZE = 52;
 const REGULAR_PIN_SIZE = 40;
 const OFFER_NUMBER = 10;
 const MAP_ZOOM = 13;
+const MAP_COORDINATES_RESOLUTION = 5;
 
 const Tokyo = {
   Lat: 35.675,
@@ -45,7 +46,7 @@ const mainPin = L.marker(
 const pinsGroup = L.layerGroup().addTo(map);
 
 const setAddress = () => {
-  address.value = `${Tokyo.Lat.toFixed(5)}, ${Tokyo.Lng.toFixed(5)}`;
+  address.value = `${Tokyo.Lat.toFixed(MAP_COORDINATES_RESOLUTION)}, ${Tokyo.Lng.toFixed(MAP_COORDINATES_RESOLUTION)}`;
 };
 
 // создает 10 пинов
