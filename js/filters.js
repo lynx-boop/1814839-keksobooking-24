@@ -25,19 +25,19 @@ const filterByGuests = (advert) => (
 );
 
 const filterByPrice = (advert) => {
-  if (priceSelect.value !== DEFAULT_VALUE) {
-    switch (priceSelect.value) {
-      case 'low':
-        return (Number(advert.offer.price) <= MIN_PRICE);
+  switch (priceSelect.value) {
+    case 'low':
+      return (Number(advert.offer.price) <= MIN_PRICE);
 
-      case 'middle':
-        return (Number(advert.offer.price) > MIN_PRICE && Number(advert.offer.price) < MAX_PRICE);
+    case 'middle':
+      return (Number(advert.offer.price) > MIN_PRICE && Number(advert.offer.price) < MAX_PRICE);
 
-      case 'high':
-        return (Number(advert.offer.price) >= MAX_PRICE);
-    }
+    case 'high':
+      return (Number(advert.offer.price) >= MAX_PRICE);
+
+    default:
+      return true;
   }
-  return true;
 };
 
 const filterByFeatures = (advert) => {
