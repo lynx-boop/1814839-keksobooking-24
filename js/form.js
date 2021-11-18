@@ -70,7 +70,7 @@ const onTitleInput = () => {
   titleInput.reportValidity();
 };
 
-const onpriceInput = () => {
+const onPriceInput = () => {
   const minPrice = priceInput.min;
 
   if (priceInput.value > MAX_PRICE) {
@@ -121,15 +121,22 @@ const onTimeOutChange = () => {
 const syncTimeIn = () => onTimeInChange();
 const syncTimeOut = () => onTimeOutChange();
 
-const resetForms = () => {
+//FIXME  вот тут код повторяется, потому что если я вешаю вызов этой функции и на сабмит, и на очистку, срабатывает превент дефолт на сабмит, и форма просто не отправляется
+const onFormReset = (evt) => {
+  evt.preventDefault();
   adForm.reset();
-  setAddress();
   resetMap();
   mapFilters.reset();
+  onHousingTypeChange();
+  setAddress();
 };
 
 const onSendLoad = () => {
-  resetForms();
+  adForm.reset();
+  resetMap();
+  mapFilters.reset();
+  onHousingTypeChange();
+  setAddress();
   renderSuccessPopup();
 };
 
@@ -151,13 +158,13 @@ const setFormListeners = () => {
   syncTimeIn();
   syncTimeOut();
   titleInput.addEventListener('input', onTitleInput);
-  priceInput.addEventListener('input', onpriceInput);
+  priceInput.addEventListener('input', onPriceInput);
   room.addEventListener('change', onRoomChange);
   housingType.addEventListener('change', onHousingTypeChange);
   timeIn.addEventListener('change', onTimeInChange);
   timeOut.addEventListener('change', onTimeOutChange);
   adForm.addEventListener('submit', onFormSubmit);
-  resetButton.addEventListener('click', resetForms);
+  resetButton.addEventListener('click', onFormReset);
 };
 
 export { setFormListeners };
