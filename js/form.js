@@ -6,6 +6,21 @@ const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
 
+const roomsCapacity = {
+  1: [1],
+  2: [1, 2],
+  3: [1, 2, 3],
+  100: [0],
+};
+
+const minPriceByType = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000,
+};
+
 const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 const mapFilterElements = document.querySelectorAll('fieldset, select');
@@ -17,22 +32,8 @@ const capacityOptions = capacity.querySelectorAll('option');
 const housingType = document.querySelector('#type');
 const timeIn = document.querySelector('#timein');
 const timeOut = document.querySelector('#timeout');
-
 const resetButton = document.querySelector('.ad-form__reset');
 
-const roomsCapacity = {
-  1: [1],
-  2: [1, 2],
-  3: [1, 2, 3],
-  100: [0],
-};
-const minPriceByType = {
-  bungalow: 0,
-  flat: 1000,
-  hotel: 3000,
-  house: 5000,
-  palace: 10000,
-};
 
 //неактивное состояние
 const disableFormElements = (elements) => elements.forEach((element) => element.disabled = true);

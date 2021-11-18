@@ -4,8 +4,6 @@ import { loadData } from './api.js';
 import { showAlert } from './utils.js';
 import { setFilterListener } from './filters.js';
 
-const address = document.querySelector('#address');
-
 const TILE_LAYER = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const TILE_LAYER_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 const MAIN_PIN_SIZE = 52;
@@ -17,6 +15,9 @@ const Tokyo = {
   Lat: 35.675,
   Lng: 139.745,
 };
+
+const address = document.querySelector('#address');
+
 
 const map = L.map('map-canvas')
   .setView({

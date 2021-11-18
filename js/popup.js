@@ -12,7 +12,7 @@ const renderPopup = (template) => {
 
   const onNodeClick = () => onClose();
 
-  function onDocumentKeydown (evt) {
+  function onDocumentKeydown(evt) {
     if (evt.key === 'Escape') {
       onClose();
     }
@@ -30,4 +30,4 @@ const renderErrorPopup = () => {
   renderPopup(errorTemplate);
 };
 
-export {renderSuccessPopup, renderErrorPopup};
+export { renderSuccessPopup, renderErrorPopup };

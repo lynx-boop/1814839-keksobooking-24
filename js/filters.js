@@ -1,6 +1,10 @@
 import { renderPins, resetRegularPins, OFFER_NUMBER } from './map.js';
 import { debounce } from './utils/debounce.js';
 
+const DEFAULT_VALUE = 'any';
+const MIN_PRICE = 10000;
+const MAX_PRICE = 50000;
+
 const filterForm = document.querySelector('.map__filters');
 const housingTypeInput = filterForm.querySelector('#housing-type');
 const priceSelect = filterForm.querySelector('#housing-price');
@@ -8,9 +12,6 @@ const roomsSelect = filterForm.querySelector('#housing-rooms');
 const guestsSelect = filterForm.querySelector('#housing-guests');
 const features = filterForm.querySelectorAll('.map__checkbox');
 
-const DEFAULT_VALUE = 'any';
-const MIN_PRICE = 10000;
-const MAX_PRICE = 50000;
 
 const filterByType = (advert) => (
   housingTypeInput.value === DEFAULT_VALUE || advert.offer.type === housingTypeInput.value

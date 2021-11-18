@@ -1,6 +1,3 @@
-const cardTemplate = document.querySelector('#card')
-  .content
-  .querySelector('.popup');
 const offerTypes = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
@@ -8,6 +5,10 @@ const offerTypes = {
   palace: 'Дворец',
   hotel: 'Отель',
 };
+
+const cardTemplate = document.querySelector('#card')
+  .content
+  .querySelector('.popup');
 
 const createCard = (advert) => {
   const advertElement = cardTemplate.cloneNode(true);
@@ -20,7 +21,7 @@ const createCard = (advert) => {
   advertElement.querySelector('.popup__title').textContent = advert.offer.title;
   advertElement.querySelector('.popup__text--address').textContent = advert.offer.address;
   advertElement.querySelector('.popup__text--price').textContent = `${advert.offer.price} ₽/ночь`;
-  advertElement.querySelector('.popup__text--capacity').textContent =`${advert.offer.rooms} комнаты для ${advert.offer.guests} гостей`;
+  advertElement.querySelector('.popup__text--capacity').textContent = `${advert.offer.rooms} комнаты для ${advert.offer.guests} гостей`;
   advertElement.querySelector('.popup__text--time').textContent = `Заезд после ${advert.offer.checkin}, выезд до ${advert.offer.checkin}`;
   advertElement.querySelector('.popup__description').textContent = advert.offer.description;
   advertType.textContent = offerTypes[advert.offer.type];
@@ -28,7 +29,7 @@ const createCard = (advert) => {
   if ('features' in advert.offer && advert.offer.features.length > 0) {
     popupFeatures.innerHTML = '';
     advert.offer.features.forEach((feature) => {
-      const featureItem =  document.createElement('li');
+      const featureItem = document.createElement('li');
       featureItem.classList.add('popup__feature', `popup__feature--${feature}`);
       popupFeatures.appendChild(featureItem);
     });
@@ -46,4 +47,4 @@ const createCard = (advert) => {
   return advertElement;
 };
 
-export {createCard};
+export { createCard };
