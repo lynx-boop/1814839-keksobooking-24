@@ -12,6 +12,7 @@ const renderPopup = (template) => {
 
   const onNodeClick = () => onClose();
 
+  // FIXME блокирует выполнение требования Д5, не знаю, как починить :(
   function onDocumentKeydown(evt) {
     if (evt.key === 'Escape') {
       onClose();

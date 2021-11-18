@@ -92,11 +92,7 @@ const onRoomChange = () => {
   capacity.value = currentRoomCapacity[0];
 
   capacityOptions.forEach((option) => {
-    if (currentRoomCapacity.includes(Number(option.value))) {
-      option.disabled = false;
-    } else {
-      option.disabled = true;
-    }
+    option.disabled = !currentRoomCapacity.includes(Number(option.value));
   });
 };
 
