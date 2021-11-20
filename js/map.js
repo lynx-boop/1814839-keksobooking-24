@@ -80,7 +80,7 @@ const renderPins = (data) => {
 
 // отдает координаты в инпут адреса
 mainPin.on('move', (evt) => {
-  address.value = `${evt.target._latlng.lat.toFixed(5)}, ${evt.target._latlng.lng.toFixed(5)}`;
+  address.value = `${evt.target._latlng.lat.toFixed(MAP_COORDINATES_RESOLUTION)}, ${evt.target._latlng.lng.toFixed(MAP_COORDINATES_RESOLUTION)}`;
 });
 
 const onDataLoad = (data) => {
