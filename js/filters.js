@@ -1,4 +1,4 @@
-import { renderPins, resetRegularPins, OFFER_NUMBER } from './map.js';
+import { renderPins, resetRegularPins, MAX_OFFER_NUMBER } from './map.js';
 import { debounce } from './utils/debounce.js';
 
 const DEFAULT_VALUE = 'any';
@@ -48,14 +48,30 @@ const filterByFeatures = (advert) => {
   return checkedFeatures.every((feature) => advert.offer.features.includes(feature.value));
 };
 
-const filterAdverts = (advert) => (
-  filterByType(advert) && filterByRooms(advert) && filterByGuests(advert) && filterByPrice(advert) && filterByFeatures(advert)
-);
+const filterAdverts = (adverts) => {
+  const filteredOffers = [];
+
+  for (const advert of adverts) {
+    if (filterByType(advert)
+      && filterByRooms(advert)
+      && filterByGuests(advert)
+      && filterByPrice(advert)
+      && filterByFeatures(advert)) {
+      filteredOffers.push(advert);
+    }
+
+    if (filteredOffers.length === MAX_OFFER_NUMBER) {
+      return filteredOffers;
+    }
+  }
+
+  return filteredOffers;
+};
 
 const onFilterChange = (offers) => {
-  const filteredOffers = offers.filter(filterAdverts);
+  const filteredOffers = filterAdverts(offers);
   resetRegularPins();
-  renderPins(filteredOffers.slice(0, OFFER_NUMBER));
+  renderPins(filteredOffers);
 };
 
 const setFilterListener = (offers) => {

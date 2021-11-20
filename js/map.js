@@ -8,7 +8,7 @@ const TILE_LAYER = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const TILE_LAYER_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 const MAIN_PIN_SIZE = 52;
 const REGULAR_PIN_SIZE = 40;
-const OFFER_NUMBER = 10;
+const MAX_OFFER_NUMBER = 10;
 const MAP_ZOOM = 13;
 const MAP_COORDINATES_RESOLUTION = 5;
 
@@ -85,7 +85,7 @@ mainPin.on('move', (evt) => {
 
 const onDataLoad = (data) => {
   activatePage();
-  renderPins(data.slice(0, OFFER_NUMBER));
+  renderPins(data.slice(0, MAX_OFFER_NUMBER));
   setFilterListener(data);
 };
 
@@ -127,4 +127,4 @@ const resetRegularPins = () => {
   pinsGroup.clearLayers();
 };
 
-export { initMap, renderPins, setAddress, resetMap, resetRegularPins, OFFER_NUMBER };
+export { initMap, renderPins, setAddress, resetMap, resetRegularPins, MAX_OFFER_NUMBER };
