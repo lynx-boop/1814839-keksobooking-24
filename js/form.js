@@ -22,39 +22,39 @@ const minPriceByType = {
 };
 
 const adForm = document.querySelector('.ad-form');
+const adFormNodes = document.querySelectorAll('fieldset');
 const mapFilters = document.querySelector('.map__filters');
-const mapFilterElements = document.querySelectorAll('fieldset, select');
-const titleInput = document.querySelector('#title');
-const priceInput = document.querySelector('#price');
-const room = document.querySelector('#room_number');
-const capacity = document.querySelector('#capacity');
+const mapFilterNodes = document.querySelectorAll('fieldset, select');
+const titleInput = adForm.querySelector('#title');
+const capacity = adForm.querySelector('#capacity');
 const capacityOptions = capacity.querySelectorAll('option');
-const housingType = document.querySelector('#type');
-const timeIn = document.querySelector('#timein');
-const timeOut = document.querySelector('#timeout');
-const resetButton = document.querySelector('.ad-form__reset');
+const housingType = adForm.querySelector('#type');
+const priceInput = adForm.querySelector('#price');
+const timeIn = adForm.querySelector('#timein');
+const timeOut = adForm.querySelector('#timeout');
+const room = adForm.querySelector('#room_number');
+const resetButton = adForm.querySelector('.ad-form__reset');
 
 
 //неактивное состояние
-const disableFormElements = (elements) => elements.forEach((element) => element.disabled = true);
+const disableFormNodes = (elements) => elements.forEach((element) => element.disabled = true);
 
-const disableElements = () => {
+const disablePage = () => {
   adForm.classList.add('ad-form--disabled');
   mapFilters.classList.add('map__filters--disabled');
 
-  disableFormElements(mapFilterElements);
+  disableFormNodes(adFormNodes);
+  disableFormNodes(mapFilterNodes);
 };
 
-disableElements();
-
 //активное состояние
-const activateFormElements = (elements) => elements.forEach((element) => element.disabled = false);
+const activateFormNodes = (elements) => elements.forEach((element) => element.disabled = false);
 
-const activateElements = () => {
+const activatePage = () => {
   adForm.classList.remove('ad-form--disabled');
   mapFilters.classList.remove('map__filters--disabled');
 
-  activateFormElements(mapFilterElements);
+  activateFormNodes(mapFilterNodes);
 };
 
 // валидаторы;
@@ -164,4 +164,4 @@ const setFormListeners = () => {
   resetButton.addEventListener('click', onFormReset);
 };
 
-export { setFormListeners, disableElements, activateElements };
+export { setFormListeners, disablePage, activatePage };

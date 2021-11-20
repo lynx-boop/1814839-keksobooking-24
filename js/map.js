@@ -1,4 +1,4 @@
-import { activateElements } from './form.js';
+import { activatePage } from './form.js';
 import { createCard } from './card.js';
 import { loadData } from './api.js';
 import { showAlert } from './utils.js';
@@ -84,6 +84,7 @@ mainPin.on('move', (evt) => {
 });
 
 const onDataLoad = (data) => {
+  activatePage();
   renderPins(data.slice(0, OFFER_NUMBER));
   setFilterListener(data);
 };
@@ -94,7 +95,6 @@ const onDataError = () => {
 
 const initMap = () => {
   map.whenReady(() => {
-    activateElements();
     setAddress();
     loadData(onDataLoad, onDataError);
   });
