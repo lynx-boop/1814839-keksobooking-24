@@ -118,7 +118,6 @@ const onTimeOutChange = () => {
 const syncTimeIn = () => onTimeInChange();
 const syncTimeOut = () => onTimeOutChange();
 
-//FIXME  вот тут код повторяется, потому что если я вешаю вызов этой функции и на сабмит, и на очистку, срабатывает превент дефолт на сабмит, и форма просто не отправляется
 const onFormReset = (evt) => {
   evt.preventDefault();
   adForm.reset();

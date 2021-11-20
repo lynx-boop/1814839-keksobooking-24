@@ -1,6 +1,8 @@
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorTemplate = document.querySelector('#error').content.querySelector('.error');
 
+let onDocumentKeydown;
+
 const renderPopup = (template) => {
   const node = template.cloneNode(true);
   document.body.appendChild(node);
@@ -12,12 +14,11 @@ const renderPopup = (template) => {
 
   const onNodeClick = () => onClose();
 
-  // FIXME блокирует выполнение требования Д5, не знаю, как починить :(
-  function onDocumentKeydown(evt) {
+  onDocumentKeydown = (evt) => {
     if (evt.key === 'Escape') {
       onClose();
     }
-  }
+  };
 
   node.addEventListener('click', onNodeClick);
   document.addEventListener('keydown', onDocumentKeydown);

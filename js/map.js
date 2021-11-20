@@ -113,7 +113,6 @@ const initMap = () => {
 
 };
 
-//FIXME вот тут прописываю ресеты для меток, поля координат мэйнпина и карты, но они не работают :(
 const resetMap = () => {
   map.setView({
     lat: Tokyo.Lat,
