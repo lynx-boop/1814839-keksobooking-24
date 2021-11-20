@@ -6,26 +6,13 @@ const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
 
-const adForm = document.querySelector('.ad-form');
-const mapFilters = document.querySelector('.map__filters');
-const mapFilterElements = document.querySelectorAll('fieldset, select');
-const titleInput = document.querySelector('#title');
-const priceInput = document.querySelector('#price');
-const room = document.querySelector('#room_number');
-const capacity = document.querySelector('#capacity');
-const capacityOptions = capacity.querySelectorAll('option');
-const housingType = document.querySelector('#type');
-const timeIn = document.querySelector('#timein');
-const timeOut = document.querySelector('#timeout');
-
-const resetButton = document.querySelector('.ad-form__reset');
-
 const roomsCapacity = {
   1: [1],
   2: [1, 2],
   3: [1, 2, 3],
   100: [0],
 };
+
 const minPriceByType = {
   bungalow: 0,
   flat: 1000,
@@ -34,26 +21,40 @@ const minPriceByType = {
   palace: 10000,
 };
 
+const adForm = document.querySelector('.ad-form');
+const adFormNodes = document.querySelectorAll('fieldset');
+const mapFilters = document.querySelector('.map__filters');
+const mapFilterNodes = document.querySelectorAll('fieldset, select');
+const titleInput = adForm.querySelector('#title');
+const capacity = adForm.querySelector('#capacity');
+const capacityOptions = capacity.querySelectorAll('option');
+const housingType = adForm.querySelector('#type');
+const priceInput = adForm.querySelector('#price');
+const timeIn = adForm.querySelector('#timein');
+const timeOut = adForm.querySelector('#timeout');
+const room = adForm.querySelector('#room_number');
+const resetButton = adForm.querySelector('.ad-form__reset');
+
+
 //неактивное состояние
-const disableFormElements = (elements) => elements.forEach((element) => element.disabled = true);
+const disableFormNodes = (elements) => elements.forEach((element) => element.disabled = true);
 
-const disableElements = () => {
+const disablePage = () => {
   adForm.classList.add('ad-form--disabled');
-  mapFilters.classList.add('.map__filters--disabled');
+  mapFilters.classList.add('map__filters--disabled');
 
-  disableFormElements(mapFilterElements);
+  disableFormNodes(adFormNodes);
+  disableFormNodes(mapFilterNodes);
 };
 
-disableElements();
-
 //активное состояние
-const activateFormElements = (elements) => elements.forEach((element) => element.disabled = false);
+const activateFormNodes = (elements) => elements.forEach((element) => element.disabled = false);
 
-const activateElements = () => {
+const activatePage = () => {
   adForm.classList.remove('ad-form--disabled');
-  mapFilters.classList.remove('.map__filters--disabled');
+  mapFilters.classList.remove('map__filters--disabled');
 
-  activateFormElements(mapFilterElements);
+  activateFormNodes(mapFilterNodes);
 };
 
 // валидаторы;
@@ -70,7 +71,7 @@ const onTitleInput = () => {
   titleInput.reportValidity();
 };
 
-const onpriceInput = () => {
+const onPriceInput = () => {
   const minPrice = priceInput.min;
 
   if (priceInput.value > MAX_PRICE) {
@@ -91,11 +92,7 @@ const onRoomChange = () => {
   capacity.value = currentRoomCapacity[0];
 
   capacityOptions.forEach((option) => {
-    if (currentRoomCapacity.includes(Number(option.value))) {
-      option.disabled = false;
-    } else {
-      option.disabled = true;
-    }
+    option.disabled = !currentRoomCapacity.includes(Number(option.value));
   });
 };
 
@@ -121,15 +118,21 @@ const onTimeOutChange = () => {
 const syncTimeIn = () => onTimeInChange();
 const syncTimeOut = () => onTimeOutChange();
 
-const resetForms = () => {
+const onFormReset = (evt) => {
+  evt.preventDefault();
   adForm.reset();
-  setAddress();
   resetMap();
   mapFilters.reset();
+  onHousingTypeChange();
+  setAddress();
 };
 
 const onSendLoad = () => {
-  resetForms();
+  adForm.reset();
+  resetMap();
+  mapFilters.reset();
+  onHousingTypeChange();
+  setAddress();
   renderSuccessPopup();
 };
 
@@ -151,14 +154,13 @@ const setFormListeners = () => {
   syncTimeIn();
   syncTimeOut();
   titleInput.addEventListener('input', onTitleInput);
-  priceInput.addEventListener('input', onpriceInput);
+  priceInput.addEventListener('input', onPriceInput);
   room.addEventListener('change', onRoomChange);
   housingType.addEventListener('change', onHousingTypeChange);
   timeIn.addEventListener('change', onTimeInChange);
   timeOut.addEventListener('change', onTimeOutChange);
   adForm.addEventListener('submit', onFormSubmit);
-  resetButton.addEventListener('click', resetForms);
+  resetButton.addEventListener('click', onFormReset);
 };
 
-export { setFormListeners };
-export { activateElements };
+export { setFormListeners, disablePage, activatePage };

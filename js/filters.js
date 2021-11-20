@@ -1,5 +1,9 @@
-import { renderPins, resetRegularPins, OFFER_NUMBER } from './map.js';
+import { renderPins, resetRegularPins, MAX_OFFER_NUMBER } from './map.js';
 import { debounce } from './utils/debounce.js';
+
+const DEFAULT_VALUE = 'any';
+const MIN_PRICE = 10000;
+const MAX_PRICE = 50000;
 
 const filterForm = document.querySelector('.map__filters');
 const housingTypeInput = filterForm.querySelector('#housing-type');
@@ -7,10 +11,6 @@ const priceSelect = filterForm.querySelector('#housing-price');
 const roomsSelect = filterForm.querySelector('#housing-rooms');
 const guestsSelect = filterForm.querySelector('#housing-guests');
 const features = filterForm.querySelectorAll('.map__checkbox');
-
-const DEFAULT_VALUE = 'any';
-const MIN_PRICE = 10000;
-const MAX_PRICE = 50000;
 
 const filterByType = (advert) => (
   housingTypeInput.value === DEFAULT_VALUE || advert.offer.type === housingTypeInput.value
@@ -25,30 +25,19 @@ const filterByGuests = (advert) => (
 );
 
 const filterByPrice = (advert) => {
-  if (priceSelect.value === DEFAULT_VALUE) {
-    return true;
-  }
-
   switch (priceSelect.value) {
     case 'low':
-      if (Number(advert.offer.price) <= MIN_PRICE) {
-        return true;
-      }
-      break;
+      return (Number(advert.offer.price) <= MIN_PRICE);
+
     case 'middle':
-      if (Number(advert.offer.price) > MIN_PRICE && Number(advert.offer.price) < MAX_PRICE) {
-        return true;
-      }
-      break;
+      return (Number(advert.offer.price) > MIN_PRICE && Number(advert.offer.price) < MAX_PRICE);
 
     case 'high':
-      if (Number(advert.offer.price) >= MAX_PRICE) {
-        return true;
-      }
-      break;
-  }
+      return (Number(advert.offer.price) >= MAX_PRICE);
 
-  return false;
+    default:
+      return true;
+  }
 };
 
 const filterByFeatures = (advert) => {
@@ -59,14 +48,30 @@ const filterByFeatures = (advert) => {
   return checkedFeatures.every((feature) => advert.offer.features.includes(feature.value));
 };
 
-const filterAdverts = (advert) => (
-  filterByType(advert) && filterByRooms(advert) && filterByGuests(advert) && filterByPrice(advert) && filterByFeatures(advert)
-);
+const filterAdverts = (adverts) => {
+  const filteredOffers = [];
+
+  for (const advert of adverts) {
+    if (filterByType(advert)
+      && filterByRooms(advert)
+      && filterByGuests(advert)
+      && filterByPrice(advert)
+      && filterByFeatures(advert)) {
+      filteredOffers.push(advert);
+    }
+
+    if (filteredOffers.length === MAX_OFFER_NUMBER) {
+      return filteredOffers;
+    }
+  }
+
+  return filteredOffers;
+};
 
 const onFilterChange = (offers) => {
-  const filteredOffers = offers.filter(filterAdverts);
+  const filteredOffers = filterAdverts(offers);
   resetRegularPins();
-  renderPins(filteredOffers.slice(0, OFFER_NUMBER));
+  renderPins(filteredOffers);
 };
 
 const setFilterListener = (offers) => {

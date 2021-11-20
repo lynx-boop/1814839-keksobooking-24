@@ -1,17 +1,4 @@
-const getRandomArrayElement = (array) => (array[_.random(0, array.length - 1)]);
-
 const ALERT_SHOW_TIME = 5000;
-const getSomeRandomArrayElements = (array) => {
-  const result = [];
-
-  for (const item of array) {
-    if (Math.random() < 0.5) {
-      result.push(item);
-    }
-  }
-
-  return result;
-};
 
 //показывает сообщение об ошибке
 const showAlert = (message) => {
@@ -35,8 +22,4 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-export {
-  getRandomArrayElement,
-  getSomeRandomArrayElements,
-  showAlert
-};
+export { showAlert };
